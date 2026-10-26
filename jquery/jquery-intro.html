@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js"></script>
+</head>
+<body>
+    <h3>
+        welcome to jquery
+    </h3>
+    <p id="test"></p>
+    <ol>
+        <li class="demo"></li>
+        <li></li>
+    </ol>
+    <address></address>
+    <h1 class="m1"></h1>
+    <script>
+        $(document).ready(function(){
+            $("#test").text("this is sample para")
+            $(".demo").text("html");
+            $("address").text("this is sample address")
+            $(".m1").text("hello jquery")
+            $("#test").css("background-color","wheat")
+            $("#test").css("color","red")
+            $("#test").css("font-size","30px")
+            $("#test").click(function(){
+                console.log("test message clicked")
+                alert("para clicked")
+            })
+            $(".demo").css("background-color","yellow")
+            $(".demo").css("color","red")
+            $(".demo").click(function(){
+                alert("clicked")
+            })
+        })
+    </script>
+</body>
+</html>

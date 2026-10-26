@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Table</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+
+    <h2>Student Details</h2>
+
+    <table border="1" cellpadding="20">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Course</th>
+                <th>Age</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentData">
+        </tbody>
+    </table>
+
+    <script>
+        let students = [
+            { id: 1, name: "Gokul", course: "Python", age: 22 },
+            { id: 2, name: "Anand", course: "JavaScript", age: 23 },
+            { id: 3, name: "Kumar", course: "React", age: 21 },
+            { id: 4, name: "jai", course: "Django", age: 22 }
+        ];
+
+        let rows = students.map(function(student) {
+            return `
+                <tr>
+                    <td>${student.id}</td>
+                    <td>${student.name}</td>
+                    <td>${student.course}</td>
+                    <td>${student.age}</td>
+                </tr>
+            `;
+        });
+
+        $("#studentData").append(rows.join(""));
+    </script>
+</body>
+</html>

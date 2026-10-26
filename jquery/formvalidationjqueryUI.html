@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Form Validation</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <link rel="stylesheet"
+          href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.css">
+
+    <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 30px 15px;
+            color: #444;
+        }
+
+        .container {
+            max-width: 360px;
+            width: 100%;
+            margin: auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px #00000018;
+        }
+
+        h2 {
+            text-align: center;
+            color: #d9534f;
+            margin-top: 0;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .field {
+            margin: 18px 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            height: 36px;
+            padding: 8px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #d9534f;
+        }
+
+        .options {
+            margin: 18px 0;
+            font-size: 14px;
+        }
+
+        .options label {
+            font-weight: normal;
+            margin: 8px 0;
+        }
+
+        .error {
+            display: block;
+            color: #c9302c;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .invalid {
+            border: 1px solid #c9302c !important;
+            background: #fff1f1;
+        }
+
+        .valid {
+            border: 1px solid #198754 !important;
+            background: #f0fff4;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            padding: 11px;
+            border-radius: 5px;
+            background: #d9534f;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #c9302c;
+        }
+
+        .success-message {
+            display: none;
+            color: #176b35;
+            background: #e5f7eb;
+            padding: 12px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .help {
+            display: none;
+            background: #fff8df;
+            padding: 10px;
+            font-size: 12px;
+            border-radius: 5px;
+            margin: 8px 0;
+        }
+
+        .success-title {
+            color: #198754;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container" id="formBox">
+
+    <h2 id="heading">Registration Form</h2>
+    <p class="subtitle">Enter your details below</p>
+
+    <form id="myForm">
+
+        <div class="field">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name">
+
+            <span class="error" id="nameError">
+                Please enter your name.
+            </span>
+        </div>
+
+        <div class="field">
+            <label for="email">Email:</label>
+            <input type="email" id="email">
+
+            <span class="error" id="emailError">
+                Enter a valid email address.
+            </span>
+
+            <button type="button" id="helpBtn">
+                Toggle Email Help
+            </button>
+
+            <div class="help" id="emailHelp">
+                Example: gokul@gmail.com
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="address">Address (optional):</label>
+            <input type="text" id="address">
+        </div>
+
+        <div class="field">
+            <label for="terms">Agree with T&amp;Cs?</label>
+
+            <select id="terms">
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+
+            <span class="error" id="termsError">
+                Please agree to the terms.
+            </span>
+        </div>
+
+        <div class="options">
+            <label>
+                <input type="checkbox" name="skill" value="HTML">
+                HTML
+            </label>
+
+            <label>
+                <input type="checkbox" name="skill" value="CSS">
+                CSS
+            </label>
+
+            <span class="error" id="skillError">
+                Select at least one expertise.
+            </span>
+        </div>
+
+        <div class="options">
+            <label>
+                <input type="radio" name="language" value="Python">
+                Python
+            </label>
+
+            <label>
+                <input type="radio" name="language" value="Java">
+                Java
+            </label>
+
+            <label>
+                <input type="radio" name="language" value="SQL">
+                SQL
+            </label>
+
+            <span class="error" id="languageError">
+                Please select a language.
+            </span>
+        </div>
+
+        <button type="submit" id="submitBtn">Proceed</button>
+
+        <button type="button" id="resetBtn">Reset Form</button>
+
+        <p class="success-message" id="success">
+            Form submitted successfully!
+        </p>
+
+    </form>
+</div>
+
+<script>
+$(document).ready(function () {
+
+    $(".error").hide();
+    $("#formBox").hide().show(
+        "fade",
+        { easing: "easeOutBounce" },
+        700
+    );
+
+    $("#helpBtn").click(function () {
+        $("#emailHelp").toggle("blind", 300);
+    });
+
+    $("#name, #email, #terms").on("input change", function () {
+        $(this).removeClass("invalid");
+    });
+
+    $("#name").on("input", function () {
+        if ($(this).val().trim() !== "") {
+            $("#nameError").hide("fade", 200);
+        }
+    });
+
+    $("#email").on("input", function () {
+        let pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (pattern.test($(this).val().trim())) {
+            $("#emailError").hide("fade", 200);
+        }
+    });
+
+    $("#terms").change(function () {
+        if ($(this).val() === "yes") {
+            $("#termsError").hide("fade", 200);
+        }
+    });
+
+    $('input[name="skill"]').change(function () {
+        if ($('input[name="skill"]:checked').length > 0) {
+            $("#skillError").hide("fade", 200);
+        }
+    });
+
+    $('input[name="language"]').change(function () {
+        if ($('input[name="language"]:checked').length > 0) {
+            $("#languageError").hide("fade", 200);
+        }
+    });
+
+    $("#myForm").submit(function (event) {
+
+        event.preventDefault();
+
+        $(".error").hide();
+        $("input, select").removeClass("invalid valid");
+        $("#success").hide();
+
+        let valid = true;
+
+        let name = $("#name").val().trim();
+        let email = $("#email").val().trim();
+        let terms = $("#terms").val();
+
+        if (name === "") {
+            $("#name")
+                .addClass("invalid")
+                .effect("shake", { times: 2 }, 400);
+
+            $("#nameError").show("fade", 300);
+            valid = false;
+        }
+
+        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (email === "" || !emailPattern.test(email)) {
+            $("#email")
+                .addClass("invalid")
+                .effect("shake", { times: 2 }, 400);
+
+            $("#emailError").show("fade", 300);
+            valid = false;
+        }
+
+        if (terms !== "yes") {
+            $("#terms")
+                .addClass("invalid")
+                .effect("shake", { times: 2 }, 400);
+
+            $("#termsError").show("fade", 300);
+            valid = false;
+        }
+
+        if ($('input[name="skill"]:checked').length === 0) {
+            $("#skillError").show("fade", 300);
+            $("#skillError").effect("highlight", {}, 700);
+            valid = false;
+        }
+
+        if ($('input[name="language"]:checked').length === 0) {
+            $("#languageError").show("fade", 300);
+            $("#languageError").effect("shake", { times: 2 }, 400);
+            valid = false;
+        }
+
+        if (!valid) {
+            $("#formBox").stop(true, true).effect(
+                "shake",
+                { times: 1, distance: 6 },
+                400
+            );
+
+            return;
+        }
+
+        $("#heading").switchClass(
+            "",
+            "success-title",
+            500,
+            "easeInOutQuad"
+        );
+
+        $("#name, #email, #terms").removeClass("invalid")
+                                  .addClass("valid");
+
+        $("#success")
+            .text("Form submitted successfully!")
+            .show()
+            .effect("highlight", { color: "#90EE90" }, 1000);
+
+        $("#submitBtn")
+            .text("Submitted Successfully!")
+            .css("background", "#198754")
+            .animate(
+                { opacity: 0.6 },
+                200,
+                "easeInOutQuad"
+            )
+            .animate(
+                { opacity: 1 },
+                300,
+                "easeOutBounce"
+            );
+    });
+
+    $("#resetBtn").click(function () {
+
+        $("#myForm")[0].reset();
+
+        $(".error, #success, #emailHelp").hide("fade", 200);
+
+        $("input, select").removeClass("invalid valid");
+
+        // SWITCH CLASS: Restore heading style
+        $("#heading").switchClass(
+            "success-title",
+            "",
+            300
+        );
+
+        $("#submitBtn")
+            .text("Proceed")
+            .css({
+                background: "#d9534f",
+                opacity: 1
+            });
+
+        $("#formBox").effect("highlight", {
+            color: "#d9edf7"
+        }, 500);
+    });
+
+});
+</script>
+
+</body>
+</html>

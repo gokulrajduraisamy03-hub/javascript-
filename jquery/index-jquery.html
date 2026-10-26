@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jquery</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js"></script>
+</head>
+<body>
+    <button id="btn">click</button>
+    <p id="res"></p>
+    <input type="text" id="user" placeholder="Enter your name...">
+    <p id="output"></p>
+    <script>
+        $(document).ready(function(){
+            $("#btn").on("dblclick",function(){
+                $("#res").text("Button clicked!");
+            })
+            $("#user").on("keyup",function(){
+                let name=$(this).val()
+                $("#output").text(name)
+            })
+
+            // $(selector).on("event",function(){
+            // })
+        })
+    </script>
+</body>
+</html>
